@@ -1,12 +1,15 @@
 'use strict'
-const express = require('express')
-const router = express.Router()
 
 /*
 |--------------------------------------------------------------------------
 |  Project Controller
 |--------------------------------------------------------------------------
+*/
 
+const express = require('express')
+const router = express.Router()
+const Project = require('./model')
+const {idValidator, bodyValidator} = require('./project-middleware')
 /**
  * Route serving a list of all projects.
  * @url /api/projects
@@ -16,7 +19,19 @@ const router = express.Router()
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/', (req, res, next) => {})
+router.get('/', async (req, res, next) => {
+	try {
+		const project = await Project.all()
+		const newdata = project.map((el) => {
+			el.project_completed = Boolean(el.project_completed)
+			return el
+		})
+
+		res.status(200).json(newdata)
+	} catch (error) {
+		next(error)
+	}
+})
 
 /**
  * Route serving one project by the ID.
@@ -26,7 +41,17 @@ router.get('/', (req, res, next) => {})
  * @param {middleware}  IDvalidator - validate valid IDs.
  * @param {string} ID - project id
  */
-router.get('/:id', (req, res, next) => {})
+router.get('/:id', idValidator, async (req, res, next) => {
+	const {id} = req.params
+
+	try {
+		const data = req.project
+		// data.project_completed = Boolean(data.project_completed)
+		res.status(200).json(data)
+	} catch (error) {
+		next(error)
+	}
+})
 
 /**
  * Route to create a new project.
@@ -37,7 +62,23 @@ router.get('/:id', (req, res, next) => {})
  * @param {middleware} BodyValidator - clean and validate body content.
  *
  */
-router.post('/:', (req, res, next) => {})
+router.post('/', bodyValidator, async (req, res, next) => {
+	console.log(req.data)
+	try {
+		const [id] = await Project.create(req.data)
+		const newProject = await Project.findById(id).first()
+
+		const response = {
+			project_id: id,
+			project_name: req.data.project_name,
+			project_description: req.data.description,
+			project_completed: Boolean(req.data.project_completed),
+		}
+		res.status(201).json(response)
+	} catch (error) {
+		next(error)
+	}
+})
 
 /**
  * Route to Update a existing project by the ID.
@@ -63,4 +104,19 @@ router.put('/:id', (req, res, next) => {})
  */
 router.delete('/:id', (req, res, next) => {})
 
+// Error Handling Fucntion
+//@Stack & err.message must be removed on Production
+
+router.use((err, req, res, next) => {
+	if (process.env.NODE_ENV === 'development') {
+		res.status(err.status || 500).json({
+			stack: err.stack,
+			message: err.message,
+		})
+	} else {
+		res.status(err.status || 500).json({
+			message: 'Oppq Router Failed...',
+		})
+	}
+})
 module.exports = router

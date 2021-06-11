@@ -6,7 +6,7 @@
 | This file bootstraps our appplciation.
 |
 */
-
+require('dotenv').config()
 const server = require('./api/server')
 
 const PORT = process.env.PORT || 5000
