@@ -3,8 +3,17 @@ const db = require('../../data/dbConfig')
 |--------------------------------------------------------------------------
 |  Task Model
 |--------------------------------------------------------------------------
-
 */
+
+/**
+ * Table of contents
+ * *
+ * @method  all        = returns all raw tasks from @tasks database
+ * @method  findById   = returns one raw tasks from @tasks database
+ * @method  create     = inserts validated data to @tasks database
+ *
+ * */
+
 const all = () => {
 	return db()
 		.from('tasks as t')
@@ -18,20 +27,12 @@ const all = () => {
 		)
 }
 
-const findById = (task_id) => {
-	return db('tasks').where('task_id', task_id)
-}
+const findById = (task_id) => db('tasks').where('task_id', task_id)
 
-const create = (data) => {
-	console.log('data', data)
-	return db('tasks').insert(data)
-}
-
-const addStep = (project_id, step) => {}
+const create = (data) => db('tasks').insert(data)
 
 module.exports = {
 	all,
 	findById,
 	create,
-	addStep,
 }

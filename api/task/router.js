@@ -10,6 +10,7 @@ const express = require('express')
 const router = express.Router()
 const Task = require('./model')
 const {idValidator, bodyValidator} = require('./task-middlewares')
+
 /**
  * Route serving a list of all projects.
  * @url /api/projects
@@ -32,28 +33,8 @@ router.get('/', async (req, res, next) => {
 	}
 })
 
-// /**
-//  * Route serving one task by the ID.
-//  * @url /api/tasks/:ID'
-//  * @name GETBYID
-//  * @method  GET
-//  * @param {middleware}  IDvalidator - validate valid IDs.
-//  * @param {string} ID - project id
-//  */
-// router.get('/:id', async (req, res, next) => {
-// 	const {id} = req.params
-
-// 	try {
-// 		const data = req.project
-// 		data.project_completed = Boolean(data.project_completed)
-// 		res.status(200).json(data)
-// 	} catch (error) {
-// 		next(error)
-// 	}
-// })
-
 /**
- * Route to create a new project.
+ * Route to create a new task.
  * @url /api/projects
  * @name CREATE
  * @method  POST
@@ -62,7 +43,6 @@ router.get('/', async (req, res, next) => {
  *
  */
 router.post('/', async (req, res, next) => {
-	console.log(req.data)
 	try {
 		const [id] = await Task.create(req.body)
 		const newtask = await Task.findById(id).first()

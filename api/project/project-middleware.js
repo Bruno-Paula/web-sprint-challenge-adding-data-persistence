@@ -1,3 +1,17 @@
+/*
+|--------------------------------------------------------------------------
+|  Project Middleware
+|--------------------------------------------------------------------------
+*/
+
+/**
+ * Table of contents
+ * *
+ * @function idValidator     = validating if ID already exist on the database
+ * @function  bodyValidator  = sanitizes the data before inserted to the database
+ *
+ * */
+
 const Project = require('./model.js')
 
 const idValidator = async (req, res, next) => {

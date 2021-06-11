@@ -1,16 +1,26 @@
 const db = require('../../data/dbConfig')
 /*
 |--------------------------------------------------------------------------
-|  Project Model
+|  Resources Model
 |--------------------------------------------------------------------------
 
 */
+
+/**
+ * Table of contents
+ * *
+ * @method  all        = returns all raw resources from @Resources database
+ * @method  findById   = returns one raw resources from @Resources database
+ * @method  create     = inserts validated data to @Resources database
+ *
+ * */
+
 const all = () => {
 	return db('resources')
 }
 
-const findById = (project_name) => {
-	return db('resources').where('project_name', project_name)
+const findById = (Resources_name) => {
+	return db('resources').where('project_name', Resources_name)
 }
 
 const create = (data) => {

@@ -1,15 +1,28 @@
+/*
+|--------------------------------------------------------------------------
+|  Tasks Middleware
+|--------------------------------------------------------------------------
+*/
+
+/**
+ * Table of contents
+ * *
+ * @function idValidator     = validating if ID already exist on the database
+ * @function  bodyValidator  = sanitizes the data before inserted to the database
+ *
+ * */
+
 const Task = require('./model.js')
 
 const idValidator = async (req, res, next) => {
-	console.log('validator working')
 	const {id} = req.params
 	try {
-		const data = await Resource.findById(id).first()
+		const data = await Task.findById(id).first()
 
 		if (!data) {
 			next({
 				status: 404,
-				message: `Resource with ID# ${id} Not Found!`,
+				message: `Task with ID# ${id} Not Found!`,
 			})
 		} else {
 			req.project = data

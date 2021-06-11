@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-|  Project Controller
+|  Projects Controller
 |--------------------------------------------------------------------------
 */
 
@@ -10,6 +10,7 @@ const express = require('express')
 const router = express.Router()
 const Project = require('./model')
 const {idValidator, bodyValidator} = require('./project-middleware')
+
 /**
  * Route serving a list of all projects.
  * @url /api/projects
@@ -40,11 +41,8 @@ router.get('/', async (req, res, next) => {
  * @param {string} ID - project id
  */
 router.get('/:id', idValidator, async (req, res, next) => {
-	const {id} = req.params
-
 	try {
 		const data = req.project
-		// data.project_completed = Boolean(data.project_completed)
 		res.status(200).json(data)
 	} catch (error) {
 		next(error)
@@ -61,7 +59,6 @@ router.get('/:id', idValidator, async (req, res, next) => {
  *
  */
 router.post('/', bodyValidator, async (req, res, next) => {
-	console.log(req.data)
 	try {
 		const [id] = await Project.create(req.data)
 		const newProject = await Project.findById(id).first()
@@ -108,7 +105,7 @@ router.use((err, req, res, next) => {
 		})
 	} else {
 		res.status(err.status || 500).json({
-			message: 'Oppq Router Failed...',
+			message: 'Opps something Failed...',
 		})
 	}
 })
