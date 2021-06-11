@@ -18,6 +18,14 @@ if (process.env.NODE_ENV === 'development') {
 server.use('/api/projects', ProjectController)
 server.use('/api/resources', ResourceController)
 server.use('/api/tasks', TasksController)
+server.use('/', (req, res) => {
+	res.status(200).send(`
+		<div style="text-align:center"> 
+			<h1>Welcome to my Data Persistence DB Project </h1> 
+			Done By <a href="https://brunopaula.com">Bruno Paula
+		</div>
+	`)
+})
 
 // Catch All error handling
 server.use('*', (req, res) => {
