@@ -6,23 +6,19 @@ const db = require('../../data/dbConfig')
 
 */
 const all = () => {
-	return db('resource')
+	return db('resources')
 }
 
-const findById = (project_id) => {
-	return db('projects').where('project_id', project_id)
+const findById = (project_name) => {
+	return db('resources').where('project_name', project_name)
 }
 
 const create = (data) => {
-	console.log('data', data)
-	return db('projects').insert(data)
+	return db('resources').insert(data)
 }
-
-const addStep = (project_id, step) => {}
 
 module.exports = {
 	all,
 	findById,
 	create,
-	addStep,
 }

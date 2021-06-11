@@ -14,8 +14,6 @@ const {idValidator, bodyValidator} = require('./project-middleware')
  * Route serving a list of all projects.
  * @url /api/projects
  * @method  GET
- * @memberof module:routers/users~usersRouter
- * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
@@ -67,14 +65,9 @@ router.post('/', bodyValidator, async (req, res, next) => {
 	try {
 		const [id] = await Project.create(req.data)
 		const newProject = await Project.findById(id).first()
+		newProject.project_completed = Boolean(newProject.project_completed)
 
-		const response = {
-			project_id: id,
-			project_name: req.data.project_name,
-			project_description: req.data.description,
-			project_completed: Boolean(req.data.project_completed),
-		}
-		res.status(201).json(response)
+		res.status(201).json(newProject)
 	} catch (error) {
 		next(error)
 	}

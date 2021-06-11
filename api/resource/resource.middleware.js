@@ -1,4 +1,4 @@
-const Task = require('./model.js')
+const Resource = require('./model.js')
 
 const idValidator = async (req, res, next) => {
 	console.log('validator working')
@@ -21,10 +21,11 @@ const idValidator = async (req, res, next) => {
 }
 
 const bodyValidator = (req, res, next) => {
-	const {task_description} = req.body
+	console.log('body validator')
+	const {resource_name, resource_description} = req.body
 
-	if (!task_description) {
-		next({status: 400, message: 'task_description is a required Fields'})
+	if (!resource_name) {
+		next({status: 400, message: 'Missing fields or Invalid Fields'})
 	} else {
 		next()
 	}
