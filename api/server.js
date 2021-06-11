@@ -1,1 +1,7 @@
-// build your server here and require it from index.js
+'use strict'
+const express = require('express')
+
+const server = express()
+
+server.use(express.json())
+server.use()
